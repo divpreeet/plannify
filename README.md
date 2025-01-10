@@ -11,4 +11,4 @@ Plannify is a web based tool designed to help developers organize + manage their
 - **View them in a beautiful chart**
 
 ## Try it out
-[Plannify]()
+[Plannify](https://plannify-silk.vercel.app)
