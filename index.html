@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plannify - Advanced Project Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'custom-white': '#F7F7F2',
+                        'custom-light': '#E4E6C3',
+                        'custom-green': '#899878',
+                        'custom-dark': '#222725',
+                        'custom-black': '#121113',
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-image: linear-gradient(to bottom right, #121113, #1a1a1d);
+        }
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #899878 #222725;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #222725;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #899878;
+            border-radius: 4px;
+            border: 2px solid #222725;
+        }
+        .task-item {
+            transition: all 0.3s ease;
+        }
+        .task-item:hover {
+            transform: translateX(5px);
+        }
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-custom-black text-custom-white font-sans min-h-screen flex flex-col">
+    <header id="header" class="bg-custom-dark py-3 fixed w-full z-50 transition-all duration-300 ease-in-out">
+        <div class="container mx-auto px-4 flex justify-center items-center">
+            <h1 class="text-2xl font-bold tracking-tight">Plannify</h1>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto p-6 md:p-10 mt-16">
+        <div class="grid md:grid-cols-2 gap-10">
+            <section id="project-form-section" class="bg-custom-dark p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-semibold mb-6">Create New Project</h2>
+                <form id="project-form" class="space-y-6">
+                    <div>
+                        <label for="project-name" class="block text-sm font-medium mb-1">Project Name</label>
+                        <input type="text" id="project-name" name="project-name" required class="w-full rounded-md bg-custom-black border-custom-green text-custom-white px-3 py-2 focus:ring-2 focus:ring-custom-green focus:border-transparent">
+                    </div>
+                    <div>
+                        <label for="project-type" class="block text-sm font-medium mb-1">Project Type</label>
+                        <select id="project-type" name="project-type" required class="w-full rounded-md bg-custom-black border-custom-green text-custom-white px-3 py-2 focus:ring-2 focus:ring-custom-green focus:border-transparent">
+                            <option value="">Select a type</option>
+                            <option value="web-app">Web App</option>
+                            <option value="mobile-app">Mobile App</option>
+                            <option value="desktop-app">Desktop App</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="project-description" class="block text-sm font-medium mb-1">Project Description</label>
+                        <textarea id="project-description" name="project-description" rows="3" class="w-full rounded-md bg-custom-black border-custom-green text-custom-white px-3 py-2 focus:ring-2 focus:ring-custom-green focus:border-transparent"></textarea>
+                    </div>
+                    <div>
+                        <label for="project-deadline" class="block text-sm font-medium mb-1">Project Deadline</label>
+                        <input type="date" id="project-deadline" name="project-deadline" required class="w-full rounded-md bg-custom-black border-custom-green text-custom-white px-3 py-2 focus:ring-2 focus:ring-custom-green focus:border-transparent">
+                    </div>
+                    <div id="tasks-container" class="space-y-3">
+                        <label class="block text-sm font-medium mb-1">Tasks</label>
+                        <div id="tasks-list"></div>
+                        <button type="button" id="add-task-btn" class="text-custom-green hover:text-custom-light transition-colors duration-200">+ Add Task</button>
+                    </div>
+                    <button type="submit" class="w-full bg-custom-green text-custom-black font-semibold py-2 px-4 rounded-md hover:bg-opacity-90 transition-colors duration-200">Create Project</button>
+                </form>
+            </section>
+
+            <section id="projects-section" class="bg-custom-dark p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-semibold mb-6">Your Projects</h2>
+                <div id="project-list" class="space-y-6 max-h-[calc(100vh-20rem)] overflow-y-auto pr-4 custom-scrollbar"></div>
+            </section>
+        </div>
+        <section id="dashboard-section" class="mt-10 bg-custom-dark p-8 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-semibold mb-6">Project Dashboard</h2>
+            <div class="grid md:grid-cols-2 gap-10">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Task Priority Distribution</h3>
+                    <canvas id="task-priority-chart"></canvas>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Hours Worked per Project</h3>
+                    <canvas id="hours-worked-chart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="/src/app.js"></script>
+</body>
+</html>
+
